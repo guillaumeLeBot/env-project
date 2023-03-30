@@ -1,4 +1,11 @@
 services:
+
+  mailer:
+    image: schickling/mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+      
   database:
     container_name: database
     image: mysql:8.0
@@ -45,3 +52,12 @@ services:
     depends_on:
       - php
       - database
+      
+  ngrok:
+    container_name: ngrok
+    image: wernight/ngrok
+    ports:
+    - "4040:4040"
+    environment:
+      NGROK_AUTHTOKEN: 2KmPPZyrylhQbYgGUl4VmUI1iVx_2ynmE13EobeiRjnGc9eWj # add token from https://dashboard.ngrok.com/get-started/setup
+      command: sh -c 'ngrok http 8080' # forward the nginx service's port 8080
